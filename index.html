@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torre REGSAN Pro — Control Sanitario para Centroamérica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --navy:   #0f2747;
+            --blue:   #1a3a6b;
+            --accent: #e63946;
+            --gold:   #f4a261;
+            --light:  #f8fafc;
+            --gray:   #64748b;
+            --border: #e2e8f0;
+            --white:  #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(15, 39, 71, 0.97);
+            backdrop-filter: blur(8px);
+            padding: 16px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo {
+            color: white; font-size: 1.2rem; font-weight: 700;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a {
+            color: #90b4e8; text-decoration: none; font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: white; }
+        .nav-cta {
+            background: var(--accent); color: white !important;
+            padding: 8px 20px; border-radius: 6px; font-weight: 600 !important;
+        }
+        .nav-cta:hover { background: #c1121f !important; }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, #0d3b6e 100%);
+            display: flex; align-items: center;
+            padding: 120px 40px 80px;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -50%; right: -20%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(230,57,70,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-content { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(230,57,70,0.2); color: #ff6b6b;
+            padding: 4px 14px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 20px;
+            border: 1px solid rgba(230,57,70,0.3);
+        }
+        .hero h1 {
+            font-size: 3rem; font-weight: 800; color: white;
+            line-height: 1.15; margin-bottom: 24px;
+        }
+        .hero h1 span { color: var(--accent); }
+        .hero-sub {
+            color: #90b4e8; font-size: 1.1rem; margin-bottom: 40px; max-width: 480px;
+        }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-primary {
+            background: var(--accent); color: white;
+            padding: 14px 32px; border-radius: 8px;
+            font-weight: 700; font-size: 1rem;
+            text-decoration: none; display: inline-block;
+            transition: all 0.2s; border: none; cursor: pointer;
+        }
+        .btn-primary:hover { background: #c1121f; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(230,57,70,0.4); }
+        .btn-secondary {
+            background: transparent; color: white;
+            padding: 14px 32px; border-radius: 8px;
+            font-weight: 600; font-size: 1rem;
+            text-decoration: none; display: inline-block;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+        /* Hero mockup */
+        .hero-mockup {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px; padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .mockup-bar {
+            background: linear-gradient(135deg, #0f2747, #1a3a6b);
+            border-radius: 8px; padding: 14px 20px; margin-bottom: 16px;
+        }
+        .mockup-bar-title { color: white; font-weight: 700; font-size: 0.95rem; }
+        .mockup-bar-sub { color: #90b4e8; font-size: 0.75rem; margin-top: 2px; }
+        .mockup-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+        .mockup-tab {
+            padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+            cursor: default;
+        }
+        .mockup-tab.active { background: var(--accent); color: white; }
+        .mockup-tab.inactive { background: rgba(255,255,255,0.1); color: #90b4e8; }
+        .mockup-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+        .mockup-kpi {
+            background: rgba(255,255,255,0.08); border-radius: 8px;
+            padding: 12px; text-align: center;
+        }
+        .mockup-kpi-val { font-size: 1.4rem; font-weight: 800; }
+        .mockup-kpi-label { font-size: 0.65rem; color: #90b4e8; margin-top: 2px; }
+        .mockup-row {
+            background: rgba(255,255,255,0.06); border-radius: 6px;
+            padding: 10px 12px; margin-bottom: 6px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .mockup-row-name { color: white; font-size: 0.8rem; }
+        .mockup-badge {
+            padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 600;
+        }
+        .badge-red { background: #fee2e2; color: #991b1b; }
+        .badge-orange { background: #ffedd5; color: #9a3412; }
+        .badge-green { background: #d1fae5; color: #065f46; }
+
+        /* DOLOR */
+        .dolor {
+            background: var(--light); padding: 80px 40px;
+            text-align: center;
+        }
+        .dolor h2 { font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
+        .dolor h2 span { color: var(--accent); }
+        .dolor-sub { color: var(--gray); font-size: 1.05rem; max-width: 600px; margin: 0 auto 48px; }
+        .dolor-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 900px; margin: 0 auto; }
+        .dolor-card {
+            background: white; border: 1px solid var(--border);
+            border-radius: 12px; padding: 28px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .dolor-card .icon { font-size: 2rem; margin-bottom: 12px; }
+        .dolor-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+        .dolor-card p { color: var(--gray); font-size: 0.9rem; }
+        .dolor-costo {
+            margin-top: 48px;
+            background: linear-gradient(135deg, #fee2e2, #fff5f5);
+            border: 2px solid #fecaca; border-radius: 12px;
+            padding: 28px 32px; max-width: 700px; margin: 48px auto 0;
+        }
+        .dolor-costo h3 { font-size: 1.3rem; font-weight: 800; color: #991b1b; margin-bottom: 8px; }
+        .dolor-costo p { color: #7f1d1d; font-size: 0.95rem; }
+
+        /* SOLUCIÓN */
+        .solucion { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+        .section-eyebrow {
+            color: var(--accent); font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+        }
+        .solucion h2 { font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
+        .solucion-sub { color: var(--gray); font-size: 1.05rem; max-width: 600px; margin-bottom: 48px; }
+        .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .feature {
+            border: 1px solid var(--border); border-radius: 12px;
+            padding: 28px 24px; transition: all 0.2s;
+        }
+        .feature:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(230,57,70,0.1); }
+        .feature-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+        .feature p { color: var(--gray); font-size: 0.9rem; }
+
+        /* PIPELINE */
+        .pipeline { background: var(--navy); padding: 80px 40px; }
+        .pipeline-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .pipeline h2 { font-size: 2rem; font-weight: 800; color: white; margin-bottom: 12px; }
+        .pipeline-sub { color: #90b4e8; margin-bottom: 48px; }
+        .pipeline-steps { display: flex; justify-content: center; gap: 0; flex-wrap: wrap; }
+        .pipeline-step {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px; padding: 20px 16px; text-align: center;
+            min-width: 110px; position: relative;
+        }
+        .pipeline-step:not(:last-child)::after {
+            content: '→'; position: absolute; right: -16px; top: 50%;
+            transform: translateY(-50%); color: #90b4e8; font-size: 1.2rem; z-index: 1;
+        }
+        .pipeline-step + .pipeline-step { margin-left: 24px; }
+        .pipeline-step .step-icon { font-size: 1.5rem; margin-bottom: 8px; }
+        .pipeline-step .step-label { color: white; font-size: 0.75rem; font-weight: 600; }
+
+        /* PRECIOS */
+        .precios { padding: 80px 40px; text-align: center; background: var(--light); }
+        .precios h2 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+        .precios-sub { color: var(--gray); margin-bottom: 48px; }
+        .planes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
+        .plan {
+            background: white; border: 2px solid var(--border);
+            border-radius: 16px; padding: 36px 28px;
+            transition: all 0.2s; position: relative;
+        }
+        .plan:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+        .plan.popular {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(230,57,70,0.15);
+        }
+        .popular-badge {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: white;
+            padding: 4px 16px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700;
+        }
+        .plan-name { font-size: 1rem; font-weight: 700; color: var(--gray); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .plan-precio { font-size: 2.8rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+        .plan-precio span { font-size: 1rem; font-weight: 400; color: var(--gray); }
+        .plan-desc { color: var(--gray); font-size: 0.85rem; margin-bottom: 24px; }
+        .plan-features { list-style: none; text-align: left; margin-bottom: 32px; }
+        .plan-features li {
+            padding: 8px 0; font-size: 0.9rem; color: var(--navy);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .plan-features li:last-child { border-bottom: none; }
+        .plan-features li::before { content: '✓'; color: #10b981; font-weight: 700; }
+        .plan-btn {
+            display: block; width: 100%;
+            padding: 12px; border-radius: 8px;
+            font-weight: 700; font-size: 0.95rem;
+            text-decoration: none; text-align: center;
+            transition: all 0.2s; cursor: pointer; border: none;
+        }
+        .plan-btn-primary { background: var(--accent); color: white; }
+        .plan-btn-primary:hover { background: #c1121f; }
+        .plan-btn-secondary { background: var(--light); color: var(--navy); border: 2px solid var(--border); }
+        .plan-btn-secondary:hover { border-color: var(--navy); }
+
+        /* CTA FINAL */
+        .cta-final {
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            padding: 80px 40px; text-align: center;
+        }
+        .cta-final h2 { font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 16px; }
+        .cta-final p { color: #90b4e8; font-size: 1.05rem; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .cta-garantia { color: #90b4e8; font-size: 0.85rem; margin-top: 16px; }
+
+        /* FOOTER */
+        footer {
+            background: #07192e; padding: 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px;
+        }
+        .footer-logo { color: white; font-weight: 700; font-size: 1rem; }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { color: #64748b; text-decoration: none; font-size: 0.85rem; }
+        .footer-links a:hover { color: white; }
+        .footer-copy { color: #475569; font-size: 0.8rem; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero-content { grid-template-columns: 1fr; }
+            .hero-mockup { display: none; }
+            .hero h1 { font-size: 2rem; }
+            .dolor-cards { grid-template-columns: 1fr; }
+            .features { grid-template-columns: 1fr; }
+            .planes { grid-template-columns: 1fr; }
+            .pipeline-steps { flex-direction: column; align-items: center; }
+            .pipeline-step:not(:last-child)::after { content: '↓'; right: auto; top: auto; bottom: -20px; left: 50%; }
+            .pipeline-step + .pipeline-step { margin-left: 0; margin-top: 32px; }
+            nav { padding: 16px 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-logo">🗼 Torre REGSAN Pro</div>
+    <div class="nav-links">
+        <a href="#funciones">Funciones</a>
+        <a href="#precios">Precios</a>
+        <a href="#contacto">Contacto</a>
+        <a href="https://torre-regsan.streamlit.app" class="nav-cta" target="_blank">Probar gratis →</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <div>
+            <div class="hero-eyebrow">🌎 Centroamérica · Registros Sanitarios</div>
+            <h1>¿Cuánto pierdes cuando un registro vence <span>sin saberlo?</span></h1>
+            <p class="hero-sub">Torre REGSAN Pro gestiona todos tus registros sanitarios, dosiers y renovaciones en un solo lugar. Te avisa antes de que sea tarde.</p>
+            <div class="hero-buttons">
+                <a href="https://torre-regsan.streamlit.app" class="btn-primary" target="_blank">Probar 7 días gratis →</a>
+                <a href="#precios" class="btn-secondary">Ver planes</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-bar">
+                <div class="mockup-bar-title">🗼 Torre REGSAN Pro</div>
+                <div class="mockup-bar-sub">Empresa: Tu Empresa | Plan Enterprise</div>
+            </div>
+            <div class="mockup-tabs">
+                <div class="mockup-tab active">📋 Productos</div>
+                <div class="mockup-tab inactive">📁 Proyectos</div>
+                <div class="mockup-tab inactive">📊 Métricas</div>
+            </div>
+            <div class="mockup-kpis">
+                <div class="mockup-kpi">
+                    <div class="mockup-kpi-val" style="color:#10b981">12</div>
+                    <div class="mockup-kpi-label">🟢 Vigentes</div>
+                </div>
+                <div class="mockup-kpi">
+                    <div class="mockup-kpi-val" style="color:#f59e0b">5</div>
+                    <div class="mockup-kpi-label">🟡 Por vencer</div>
+                </div>
+                <div class="mockup-kpi">
+                    <div class="mockup-kpi-val" style="color:#ef4444">3</div>
+                    <div class="mockup-kpi-label">🔴 Expirados</div>
+                </div>
+            </div>
+            <div class="mockup-row">
+                <div class="mockup-row-name">Salsa de Tomate 240ml · CR</div>
+                <span class="mockup-badge badge-red">Expirado</span>
+            </div>
+            <div class="mockup-row">
+                <div class="mockup-row-name">Atún en Agua 170g · GT</div>
+                <span class="mockup-badge badge-orange">27 días</span>
+            </div>
+            <div class="mockup-row">
+                <div class="mockup-row-name">Leche en Polvo 800g · PA</div>
+                <span class="mockup-badge badge-green">Vigente</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DOLOR -->
+<section class="dolor">
+    <h2>El problema que ninguna hoja de Excel resuelve</h2>
+    <p class="dolor-sub">Las empresas que exportan en Centroamérica pierden tiempo y dinero gestionando registros sanitarios sin un sistema.</p>
+    <div class="dolor-cards">
+        <div class="dolor-card">
+            <div class="icon">📅</div>
+            <h3>Registros vencidos sin aviso</h3>
+            <p>Te enterás cuando el producto ya está detenido en aduana. El daño ya está hecho.</p>
+        </div>
+        <div class="dolor-card">
+            <div class="icon">📂</div>
+            <h3>Dosiers incompletos</h3>
+            <p>Documentos dispersos en emails, carpetas y WhatsApp. Nadie sabe qué falta.</p>
+        </div>
+        <div class="dolor-card">
+            <div class="icon">👨‍⚖️</div>
+            <h3>Sin control sobre los abogados</h3>
+            <p>No sabés cuánto tiempo lleva el trámite ni si el abogado ya respondió.</p>
+        </div>
+    </div>
+    <div class="dolor-costo">
+        <h3>Un contenedor detenido puede costarte $10,000 o más en un día.</h3>
+        <p>Torre REGSAN te avisa 90 días antes de que venza cualquier registro. Para que nunca llegues tarde.</p>
+    </div>
+</section>
+
+<!-- SOLUCIÓN -->
+<section class="solucion" id="funciones">
+    <div class="section-eyebrow">La solución</div>
+    <h2>Todo lo que necesitás para gestionar registros sanitarios</h2>
+    <p class="solucion-sub">Sin hojas de cálculo, sin emails perdidos, sin sorpresas en aduana.</p>
+    <div class="features">
+        <div class="feature">
+            <div class="feature-icon">🚦</div>
+            <h3>Semáforo de vencimientos en tiempo real</h3>
+            <p>Cada registro tiene su estado actualizado automáticamente. Verde, amarillo, naranja o rojo. Sabés de un vistazo qué necesita atención hoy.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📂</div>
+            <h3>Dosier completo por producto y país</h3>
+            <p>Cada documento, foto y certificado en su lugar. Con checklist de revisión guiado antes de enviar al abogado para no cometer errores.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📁</div>
+            <h3>Pipeline de renovación con 8 estados</h3>
+            <p>Desde "Preparando dosier" hasta "Certificado recibido". Con timestamps automáticos en cada cambio de estado.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">📊</div>
+            <h3>Dashboard de métricas y ranking de abogados</h3>
+            <p>Medí cuánto tarda cada trámite, cuántos días lleva el abogado sin responder y cuál es la eficiencia de cada uno.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🗺️</div>
+            <h3>Matriz de requisitos por país</h3>
+            <p>Configurá exactamente qué documentos requiere cada país. Guatemala, Costa Rica, Panamá, El Salvador, Honduras, Nicaragua y más.</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">💰</div>
+            <h3>Impacto financiero en tiempo real</h3>
+            <p>La Torre calcula cuánto dinero está en riesgo por registros vencidos o por vencer. Para que la urgencia tenga un número.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="pipeline">
+    <div class="pipeline-inner">
+        <h2>Del dosier al certificado, todo rastreado</h2>
+        <p class="pipeline-sub">Cada proyecto de renovación avanza por 8 etapas con fecha y hora exacta de cada cambio.</p>
+        <div class="pipeline-steps">
+            <div class="pipeline-step">
+                <div class="step-icon">📋</div>
+                <div class="step-label">Preparando dosier</div>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-icon">🔍</div>
+                <div class="step-label">Recolectando info</div>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-icon">📤</div>
+                <div class="step-label">Enviado a abogado</div>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-icon">🏛️</div>
+                <div class="step-label">En autoridad</div>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-icon">✅</div>
+                <div class="step-label">Certificado recibido</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRECIOS -->
+<section class="precios" id="precios">
+    <h2>Planes simples, sin sorpresas</h2>
+    <p class="precios-sub">7 días gratis en todos los planes. Sin tarjeta de crédito para empezar.</p>
+    <div class="planes">
+        <div class="plan">
+            <div class="plan-name">Basic</div>
+            <div class="plan-precio">$149<span>/mes</span></div>
+            <div class="plan-desc">Para empresas con pocos productos en un país</div>
+            <ul class="plan-features">
+                <li>Hasta 25 productos</li>
+                <li>1 país destino</li>
+                <li>1 usuario</li>
+                <li>Semáforo de vencimientos</li>
+                <li>Dosier por producto</li>
+                <li>Exportación a Excel</li>
+            </ul>
+            <a href="https://torre-regsan.streamlit.app" class="plan-btn plan-btn-secondary" target="_blank">Probar gratis</a>
+        </div>
+        <div class="plan popular">
+            <div class="popular-badge">⭐ Más elegido</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-precio">$299<span>/mes</span></div>
+            <div class="plan-desc">Para empresas que exportan a varios países</div>
+            <ul class="plan-features">
+                <li>Hasta 150 productos</li>
+                <li>3 países destino</li>
+                <li>5 usuarios</li>
+                <li>Todo lo del plan Basic</li>
+                <li>Pipeline de renovación</li>
+                <li>Dashboard de métricas</li>
+                <li>Ranking de abogados</li>
+                <li>Matriz de requisitos</li>
+            </ul>
+            <a href="https://torre-regsan.streamlit.app" class="plan-btn plan-btn-primary" target="_blank">Probar gratis →</a>
+        </div>
+        <div class="plan">
+            <div class="plan-name">Enterprise</div>
+            <div class="plan-precio">$599<span>/mes</span></div>
+            <div class="plan-desc">Para operaciones grandes con múltiples mercados</div>
+            <ul class="plan-features">
+                <li>Productos ilimitados</li>
+                <li>Todos los países</li>
+                <li>Usuarios ilimitados</li>
+                <li>Todo lo del plan Pro</li>
+                <li>Soporte prioritario</li>
+                <li>Onboarding personalizado</li>
+                <li>Actualizaciones incluidas</li>
+            </ul>
+            <a href="mailto:contacto@torreregsan.com" class="plan-btn plan-btn-secondary">Contactar →</a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final" id="contacto">
+    <h2>Empezá hoy. Gratis.</h2>
+    <p>7 días para explorar la Torre con todos sus módulos. Sin límites, sin tarjeta.</p>
+    <a href="https://torre-regsan.streamlit.app" class="btn-primary" target="_blank" style="font-size:1.1rem; padding:16px 40px;">Probar Torre REGSAN gratis →</a>
+    <p class="cta-garantia">¿Tenés preguntas? Escribinos a <strong style="color:white">contacto@torreregsan.com</strong></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">🗼 Torre REGSAN Pro</div>
+    <div class="footer-links">
+        <a href="#funciones">Funciones</a>
+        <a href="#precios">Precios</a>
+        <a href="mailto:contacto@torreregsan.com">Contacto</a>
+    </div>
+    <div class="footer-copy">© 2026 Torre REGSAN Pro. Todos los derechos reservados.</div>
+</footer>
+
+</body>
+</html>
